@@ -33,7 +33,10 @@ func HandleCreateObject(s3 S3, sseInfo SSEType) http.HandlerFunc {
 			}
 		}(file)
 
-		opts := minio.PutObjectOptions{ContentType: "application/octet-stream"}
+		opts := minio.PutObjectOptions{
+			ContentType: "application/octet-stream",
+	    SendContentMd5: true,
+  	}
 
 		if sseInfo.Type == "KMS" {
 			opts.ServerSideEncryption, _ = encrypt.NewSSEKMS(sseInfo.Key, nil)
